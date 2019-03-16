@@ -39,11 +39,17 @@ const boardStyle = css`
   .active {
     pointer-events: none;
   }
+
+  .post-game {
+    pointer-events: none;
+  }
+
   .cross {
     background-image: url(${cross});
     background-repeat: no-repeat;
     background-size: 70%;
     background-position: center;
+    pointer-events: none;
   }
   .circle {
     /* background-color: black; */
@@ -51,34 +57,42 @@ const boardStyle = css`
     background-repeat: no-repeat;
     background-size: 70%;
     background-position: center;
+    pointer-events: none;
   }
   .neutral {
     background-color: coral;
   }
 `;
 
-const initialState = [
-  { tag: "UL", status: "neutral" },
-  { tag: "UM", status: "neutral" },
-  { tag: "UR", status: "neutral" },
-  { tag: "ML", status: "neutral" },
-  { tag: "MC", status: "neutral" },
-  { tag: "MR", status: "neutral" },
-  { tag: "LL", status: "neutral" },
-  { tag: "LM", status: "neutral" },
-  { tag: "LR", status: "neutral" }
-];
-
 class Board extends Component {
   state = {
     currentTurn: 1,
     currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
     memorySlots: [],
-    slots: initialState.slice(0)
+    slots: [
+      { tag: "UL", status: "neutral" },
+      { tag: "UM", status: "neutral" },
+      { tag: "UR", status: "neutral" },
+      { tag: "ML", status: "neutral" },
+      { tag: "MC", status: "neutral" },
+      { tag: "MR", status: "neutral" },
+      { tag: "LL", status: "neutral" },
+      { tag: "LM", status: "neutral" },
+      { tag: "LR", status: "neutral" }
+    ]
   };
 
   //   componentDidMount() {}
+  componentDidUpdate() {
+    console.log(this.state.slots.map(e => e.status));
 
+    // if (
+    //   this.state.slots[0].status === this.state.slots[1].status &&
+    //   this.state.slots[0].status === this.state.slots[2].status
+    // ) {
+    //   console.log("win!");
+    // }
+  }
   // handleSwitchTurn = e => {
   //   console.log("hello");
   //   this.state.currentPlayer === "p1"
@@ -99,6 +113,10 @@ class Board extends Component {
   //     )
   //   }));
   // }
+  // handleWin = () => {
+  //   console.log(this.state.slots[0].status);
+  //   // === this.state.slots[1].status);
+  // };
 
   handleReset = () => {
     this.setState({
@@ -156,6 +174,8 @@ class Board extends Component {
                     this.setState({ currentPlayer: "p1" });
                   }
 
+                  this.setState({ currentTurn: this.state.currentTurn + 1 });
+                  // this.handleWin();
                   // console.log(this.state);
                   // if (
                   //   this.state.currentPlayer === "p1" &&
@@ -178,28 +198,8 @@ class Board extends Component {
         </div>
 
         <h1>{this.state.currentPlayer + " Turn"}</h1>
-        <button
-          onClick={() => {
-            this.setState({
-              slots: [
-                { tag: "UL", status: "neutral" },
-                { tag: "UM", status: "neutral" },
-                { tag: "UR", status: "neutral" },
-                { tag: "ML", status: "neutral" },
-                { tag: "MC", status: "neutral" },
-                { tag: "MR", status: "neutral" },
-                { tag: "LL", status: "neutral" },
-                { tag: "LM", status: "neutral" },
-                { tag: "LR", status: "neutral" }
-              ]
-            });
-            console.log(this);
-          }}
-        >
-          {" "}
-          Reset{" "}
-        </button>
-        {/* <button onClick={this.handleRewind}> Reset </button> */}
+        <button onClick={null}> Reset </button>
+        {/* <button onClick={this.handleRewind}> Rewind </button> */}
       </React.Fragment>
     );
   }
