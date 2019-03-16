@@ -4,19 +4,19 @@ import React, { Component } from "react";
 import { css, jsx } from "@emotion/core";
 
 const tileStyle = css`
-  .cross {
-    background-color: red;
-  }
-  .circle {
-    background-color: black;
-  }
+  background-color: white;
+  height: 100%;
+  width: 100%;
 `;
 
-const Tile = () => {
+const Tile = props => {
   return (
     <div
       css={tileStyle}
-      className={this.props.player === "p1" ? "cross" : "circle"}
+      // className={props.status === "p1" ? "cross" : "circle"}
+      // className= {props.player === 'p1' ? 'cross' : 'circle'}
+      id={props.id}
+      onClick={props.handleClick}
     />
   );
 };

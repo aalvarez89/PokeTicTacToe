@@ -2,75 +2,203 @@ import React, { Component } from "react";
 
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import Tile from "../Components/tile.jsx";
+import circle from "../circle.svg";
+import cross from "../cross.svg";
 
 const boardStyle = css`
-  .board {
-  }
+  /* .board {
+  } */
 
   width: 80%;
+  /* position: relative;
+  padding-top: 100%; */
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  background-color: coral;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 
-  .boardtiles {
-    color: red;
-    height: 80px;
-    width: 80px;
+  grid-gap: 20px;
+
+  justify-items: center;
+  align-items: center;
+
+  margin: 0 auto;
+
+  background-color: #dfdfdf;
+
+  .frame {
+    height: calc(100vh / 4);
+    width: 100%;
   }
-  .bluebg {
-    background-color: blue;
+
+  .blank {
+    background-color: yellow;
   }
-  .redbg {
-    background-color: red;
+
+  .active {
+    pointer-events: none;
+  }
+  .cross {
+    background-image: url(${cross});
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+  }
+  .circle {
+    /* background-color: black; */
+    background-image: url(${circle});
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+  }
+  .neutral {
+    background-color: coral;
   }
 `;
+
+const initialState = [
+  { tag: "UL", status: "neutral" },
+  { tag: "UM", status: "neutral" },
+  { tag: "UR", status: "neutral" },
+  { tag: "ML", status: "neutral" },
+  { tag: "MC", status: "neutral" },
+  { tag: "MR", status: "neutral" },
+  { tag: "LL", status: "neutral" },
+  { tag: "LM", status: "neutral" },
+  { tag: "LR", status: "neutral" }
+];
 
 class Board extends Component {
   state = {
     currentTurn: 1,
-    currentPlayer: "p1",
+    currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
     memorySlots: [],
-    slots: ["{UL: }", "UM", "UR", "ML", "MC", "MR", "LL", "LM", "LR"]
+    slots: initialState.slice(0)
   };
 
   //   componentDidMount() {}
 
-  handleSwitchTurn = e => {
-    this.state.currentPlayer === "p1"
-      ? (e.target.className = "boardtiles bluebg")
-      : (e.target.className = "boardtiles redbg");
+  // handleSwitchTurn = e => {
+  //   console.log("hello");
+  //   this.state.currentPlayer === "p1"
+  //     ? (e.target.className = "boardtiles bluebg")
+  //     : (e.target.className = "boardtiles redbg");
 
-    this.state.currentPlayer === "p1"
-      ? this.setState({ currentPlayer: "p2" })
-      : this.setState({ currentPlayer: "p1" });
-    // console.log(e.target.className);
-  };
+  //   this.state.currentPlayer === "p1"
+  //     ? this.setState({ currentPlayer: "p2" })
+  //     : this.setState({ currentPlayer: "p1" });
+  //   // console.log(e.target.className);
+  // };
+
+  // handleClick(tag, player) {
+  //   this.setState(prevState => ({
+  //     ...prevState,
+  //     slots: prevState.slots.map(slot =>
+  //       slot.tag === tag ? (slot.status = "cross") : slot
+  //     )
+  //   }));
+  // }
 
   handleReset = () => {
-    console.log(this);
+    this.setState({
+      slots: this.state.slots.map(e => {
+        return { tag: e.tag, status: "neutral" };
+      })
+    });
   };
 
   render() {
     return (
       <React.Fragment>
         <div css={boardStyle}>
-          {this.state.slots.map((tag, i) => (
-            <div
-              className="boardtiles"
-              id={tag}
-              key={i}
-              onClick={this.handleSwitchTurn}
-            />
+          {this.state.slots.map((e, i) => (
+            <div className="frame" key={i}>
+              <Tile
+                id={e.tag}
+                key={i}
+                status={e.status}
+                //CLICK EVENT
+                handleClick={e => {
+                  let coordinate = e.target.id;
+                  // e.target.className += " boop";
+                  // console.log(e.target.className);
+                  // console.log(e.target.classList.contains("blank"));
+                  // .contains("neutral"));
+
+                  this.setState({
+                    slots: this.state.slots.map(
+                      slot => {
+                        if (
+                          slot.tag === coordinate &&
+                          slot.status === "neutral"
+                        ) {
+                          if (this.state.currentPlayer === "p1") {
+                            return { tag: slot.tag, status: "p1" };
+                          } else {
+                            return { tag: slot.tag, status: "p2" };
+                          }
+                        } else {
+                          return slot;
+                        }
+                      }
+                      // slot.tag === coordinate
+                      //   ? { tag: slot.tag, status: "active" }
+                      //   : slot
+                    )
+                  });
+
+                  if (this.state.currentPlayer === "p1") {
+                    e.target.className += " cross";
+                    this.setState({ currentPlayer: "p2" });
+                  } else {
+                    e.target.className += " circle";
+                    this.setState({ currentPlayer: "p1" });
+                  }
+
+                  // console.log(this.state);
+                  // if (
+                  //   this.state.currentPlayer === "p1" &&
+                  //   this.state.slots[i].status === "active"
+                  // ) {
+                  //   e.target.className += " cross";
+                  //   console.log(e.target.className);
+                  // } else {
+                  //   e.target.className += " circle";
+                  //   console.log(e.target.className);
+                  // }
+
+                  // this.setState
+                }}
+
+                //CLICK EVENT END
+              />
+            </div>
           ))}
         </div>
 
-        <h1>{this.state.currentPlayer}</h1>
-        <button onClick={this.handleReset}> Reset </button>
+        <h1>{this.state.currentPlayer + " Turn"}</h1>
+        <button
+          onClick={() => {
+            this.setState({
+              slots: [
+                { tag: "UL", status: "neutral" },
+                { tag: "UM", status: "neutral" },
+                { tag: "UR", status: "neutral" },
+                { tag: "ML", status: "neutral" },
+                { tag: "MC", status: "neutral" },
+                { tag: "MR", status: "neutral" },
+                { tag: "LL", status: "neutral" },
+                { tag: "LM", status: "neutral" },
+                { tag: "LR", status: "neutral" }
+              ]
+            });
+            console.log(this);
+          }}
+        >
+          {" "}
+          Reset{" "}
+        </button>
         {/* <button onClick={this.handleRewind}> Reset </button> */}
       </React.Fragment>
     );
