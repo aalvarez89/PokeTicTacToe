@@ -31,14 +31,19 @@ const boardStyle = css`
     height: calc(100vh / 4);
     width: 100%;
   }
-
+  .itle {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+  }
+  /* 
   .blank {
     background-color: yellow;
   }
 
   .active {
     pointer-events: none;
-  }
+  } */
 
   .post-game {
     pointer-events: none;
@@ -59,9 +64,9 @@ const boardStyle = css`
     background-position: center;
     pointer-events: none;
   }
-  .neutral {
+  /* .neutral {
     background-color: coral;
-  }
+  } */
 `;
 
 class Board extends Component {
@@ -69,54 +74,77 @@ class Board extends Component {
     currentTurn: 1,
     currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
     memorySlots: [],
+    winConditionMet: false,
     slots: [
-      { tag: "UL", status: "neutral" },
-      { tag: "UM", status: "neutral" },
-      { tag: "UR", status: "neutral" },
-      { tag: "ML", status: "neutral" },
-      { tag: "MC", status: "neutral" },
-      { tag: "MR", status: "neutral" },
-      { tag: "LL", status: "neutral" },
-      { tag: "LM", status: "neutral" },
-      { tag: "LR", status: "neutral" }
+      { tag: "UL", status: "neutral", player: null },
+      { tag: "UM", status: "neutral", player: null },
+      { tag: "UR", status: "neutral", player: null },
+      { tag: "ML", status: "neutral", player: null },
+      { tag: "MC", status: "neutral", player: null },
+      { tag: "MR", status: "neutral", player: null },
+      { tag: "LL", status: "neutral", player: null },
+      { tag: "LM", status: "neutral", player: null },
+      { tag: "LR", status: "neutral", player: null }
     ]
   };
+  static getDerivedStateFromProps(prevProps, prevState) {
+    let win = prevState.slots;
+    let winConfirm = false;
+    if (
+      (win[0].player === "p1" &&
+        win[1].player === "p1" &&
+        win[2].player === "p1") ||
+      (win[0].player === "p2" &&
+        win[1].player === "p2" &&
+        win[2].player === "p2")
+    ) {
+      winConfirm = !winConfirm;
+      console.log("win!");
+      // if (prevState.winConditionMet === false) {
+      //   console.log("win!");
+      // } else {
+      //   return null;
+      // }
+    } else if (
+      (win[0].player === "p1" &&
+        win[3].player === "p1" &&
+        win[6].player === "p1") ||
+      (win[0].player === "p2" &&
+        win[3].player === "p2" &&
+        win[6].player === "p2")
+    ) {
+      // this.setState({ winConditionMet: true });
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[0].player === "p1" &&
+        win[4].player === "p1" &&
+        win[8].player === "p1") ||
+      (win[0].player === "p2" &&
+        win[4].player === "p2" &&
+        win[8].player === "p2")
+    ) {
+      // this.setState({ winConditionMet: true });
+      winConfirm = !winConfirm;
+      console.log("win!");
+    }
 
-  //   componentDidMount() {}
-  componentDidUpdate() {
-    console.log(this.state.slots.map(e => e.status));
-
-    // if (
-    //   this.state.slots[0].status === this.state.slots[1].status &&
-    //   this.state.slots[0].status === this.state.slots[2].status
-    // ) {
-    //   console.log("win!");
-    // }
+    return { winConditionMet: winConfirm };
+    // console.log(
+    //   "P1: " + this.state.slots.filter(e => e.player === "p1").map(e => e.tag)
+    // );
+    // console.log(
+    //   "P2: " + this.state.slots.filter(e => e.player === "p2").map(e => e.tag)
+    // );
+    // console.log(
+    //   this.state.slots.filter(e => {
+    //     e.tag === "UL" || e.tag === "UM";
+    //   })
+    // );
+    // if()
   }
-  // handleSwitchTurn = e => {
-  //   console.log("hello");
-  //   this.state.currentPlayer === "p1"
-  //     ? (e.target.className = "boardtiles bluebg")
-  //     : (e.target.className = "boardtiles redbg");
-
-  //   this.state.currentPlayer === "p1"
-  //     ? this.setState({ currentPlayer: "p2" })
-  //     : this.setState({ currentPlayer: "p1" });
-  //   // console.log(e.target.className);
-  // };
-
-  // handleClick(tag, player) {
-  //   this.setState(prevState => ({
-  //     ...prevState,
-  //     slots: prevState.slots.map(slot =>
-  //       slot.tag === tag ? (slot.status = "cross") : slot
-  //     )
-  //   }));
+  // componentDidUpdate(prevState) {
   // }
-  // handleWin = () => {
-  //   console.log(this.state.slots[0].status);
-  //   // === this.state.slots[1].status);
-  // };
 
   handleReset = () => {
     this.setState({
@@ -134,35 +162,23 @@ class Board extends Component {
             <div className="frame" key={i}>
               <Tile
                 id={e.tag}
-                key={i}
-                status={e.status}
+                // key={i}
+                status={e.player}
+                player={this.state.currentPlayer}
                 //CLICK EVENT
                 handleClick={e => {
                   let coordinate = e.target.id;
-                  // e.target.className += " boop";
-                  // console.log(e.target.className);
-                  // console.log(e.target.classList.contains("blank"));
-                  // .contains("neutral"));
 
                   this.setState({
-                    slots: this.state.slots.map(
-                      slot => {
-                        if (
-                          slot.tag === coordinate &&
-                          slot.status === "neutral"
-                        ) {
-                          if (this.state.currentPlayer === "p1") {
-                            return { tag: slot.tag, status: "p1" };
-                          } else {
-                            return { tag: slot.tag, status: "p2" };
+                    slots: this.state.slots.map(slot =>
+                      slot.tag === coordinate
+                        ? {
+                            tag: slot.tag,
+                            status: "active",
+                            player:
+                              this.state.currentPlayer === "p1" ? "p1" : "p2"
                           }
-                        } else {
-                          return slot;
-                        }
-                      }
-                      // slot.tag === coordinate
-                      //   ? { tag: slot.tag, status: "active" }
-                      //   : slot
+                        : slot
                     )
                   });
 
@@ -175,20 +191,6 @@ class Board extends Component {
                   }
 
                   this.setState({ currentTurn: this.state.currentTurn + 1 });
-                  // this.handleWin();
-                  // console.log(this.state);
-                  // if (
-                  //   this.state.currentPlayer === "p1" &&
-                  //   this.state.slots[i].status === "active"
-                  // ) {
-                  //   e.target.className += " cross";
-                  //   console.log(e.target.className);
-                  // } else {
-                  //   e.target.className += " circle";
-                  //   console.log(e.target.className);
-                  // }
-
-                  // this.setState
                 }}
 
                 //CLICK EVENT END
@@ -197,8 +199,21 @@ class Board extends Component {
           ))}
         </div>
 
-        <h1>{this.state.currentPlayer + " Turn"}</h1>
-        <button onClick={null}> Reset </button>
+        {/* <h1>{this.state.currentPlayer + " Turn"}</h1>
+        <h2>{this.state.winConditionMet ? "Victory!" : ""}</h2> */}
+        <h2>
+          {this.state.winConditionMet
+            ? "Victory!"
+            : this.state.currentPlayer + " Turn"}
+        </h2>
+        <button
+          onClick={() => {
+            console.log(this.state.winConditionMet);
+          }}
+        >
+          {" "}
+          Reset{" "}
+        </button>
         {/* <button onClick={this.handleRewind}> Rewind </button> */}
       </React.Fragment>
     );
