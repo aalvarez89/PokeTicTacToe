@@ -7,12 +7,7 @@ import circle from "../circle.svg";
 import cross from "../cross.svg";
 
 const boardStyle = css`
-  /* .board {
-  } */
-
   width: 80%;
-  /* position: relative;
-  padding-top: 100%; */
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -36,14 +31,6 @@ const boardStyle = css`
     height: 100%;
     width: 100%;
   }
-  /* 
-  .blank {
-    background-color: yellow;
-  }
-
-  .active {
-    pointer-events: none;
-  } */
 
   .post-game {
     pointer-events: none;
@@ -57,16 +44,12 @@ const boardStyle = css`
     pointer-events: none;
   }
   .circle {
-    /* background-color: black; */
     background-image: url(${circle});
     background-repeat: no-repeat;
     background-size: 70%;
     background-position: center;
     pointer-events: none;
   }
-  /* .neutral {
-    background-color: coral;
-  } */
 `;
 
 class Board extends Component {
@@ -100,11 +83,6 @@ class Board extends Component {
     ) {
       winConfirm = !winConfirm;
       console.log("win!");
-      // if (prevState.winConditionMet === false) {
-      //   console.log("win!");
-      // } else {
-      //   return null;
-      // }
     } else if (
       (win[0].player === "p1" &&
         win[3].player === "p1" &&
@@ -113,7 +91,6 @@ class Board extends Component {
         win[3].player === "p2" &&
         win[6].player === "p2")
     ) {
-      // this.setState({ winConditionMet: true });
       winConfirm = !winConfirm;
       console.log("win!");
     } else if (
@@ -124,27 +101,62 @@ class Board extends Component {
         win[4].player === "p2" &&
         win[8].player === "p2")
     ) {
-      // this.setState({ winConditionMet: true });
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[3].player === "p1" &&
+        win[4].player === "p1" &&
+        win[5].player === "p1") ||
+      (win[3].player === "p2" &&
+        win[4].player === "p2" &&
+        win[5].player === "p2")
+    ) {
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[1].player === "p1" &&
+        win[4].player === "p1" &&
+        win[7].player === "p1") ||
+      (win[1].player === "p2" &&
+        win[4].player === "p2" &&
+        win[7].player === "p2")
+    ) {
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[2].player === "p1" &&
+        win[4].player === "p1" &&
+        win[6].player === "p1") ||
+      (win[2].player === "p2" &&
+        win[4].player === "p2" &&
+        win[6].player === "p2")
+    ) {
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[6].player === "p1" &&
+        win[7].player === "p1" &&
+        win[8].player === "p1") ||
+      (win[6].player === "p2" &&
+        win[7].player === "p2" &&
+        win[8].player === "p2")
+    ) {
+      winConfirm = !winConfirm;
+      console.log("win!");
+    } else if (
+      (win[2].player === "p1" &&
+        win[5].player === "p1" &&
+        win[8].player === "p1") ||
+      (win[2].player === "p2" &&
+        win[5].player === "p2" &&
+        win[8].player === "p2")
+    ) {
       winConfirm = !winConfirm;
       console.log("win!");
     }
 
     return { winConditionMet: winConfirm };
-    // console.log(
-    //   "P1: " + this.state.slots.filter(e => e.player === "p1").map(e => e.tag)
-    // );
-    // console.log(
-    //   "P2: " + this.state.slots.filter(e => e.player === "p2").map(e => e.tag)
-    // );
-    // console.log(
-    //   this.state.slots.filter(e => {
-    //     e.tag === "UL" || e.tag === "UM";
-    //   })
-    // );
-    // if()
   }
-  // componentDidUpdate(prevState) {
-  // }
 
   handleReset = () => {
     this.setState({
@@ -199,8 +211,6 @@ class Board extends Component {
           ))}
         </div>
 
-        {/* <h1>{this.state.currentPlayer + " Turn"}</h1>
-        <h2>{this.state.winConditionMet ? "Victory!" : ""}</h2> */}
         <h2>
           {this.state.winConditionMet
             ? "Victory!"
@@ -208,11 +218,23 @@ class Board extends Component {
         </h2>
         <button
           onClick={() => {
-            console.log(this.state.winConditionMet);
+            this.setState({
+              slots: [
+                { tag: "UL", status: "neutral", player: null },
+                { tag: "UM", status: "neutral", player: null },
+                { tag: "UR", status: "neutral", player: null },
+                { tag: "ML", status: "neutral", player: null },
+                { tag: "MC", status: "neutral", player: null },
+                { tag: "MR", status: "neutral", player: null },
+                { tag: "LL", status: "neutral", player: null },
+                { tag: "LM", status: "neutral", player: null },
+                { tag: "LR", status: "neutral", player: null }
+              ]
+            });
+            console.log(this.state);
           }}
         >
-          {" "}
-          Reset{" "}
+          Reset
         </button>
         {/* <button onClick={this.handleRewind}> Rewind </button> */}
       </React.Fragment>
