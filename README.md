@@ -1,4 +1,6 @@
-Andrew Alvarez
-Tic-Tac-Toe
-Avenue Code
-March 2019
+# Tic-Tac-Toe
+
+##Andrew Alvarez
+##Avenue Code
+
+### March 2019
