@@ -13,14 +13,14 @@ const boardStyle = css`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
 
-  grid-gap: 20px;
+  grid-gap: 7px;
 
   justify-items: center;
   align-items: center;
 
   margin: 0 auto;
 
-  background-color: #dfdfdf;
+  background-color: #5d5d5d;
 
   .frame {
     height: calc(100vh / 4);
@@ -39,16 +39,55 @@ const boardStyle = css`
   .cross {
     background-image: url(${cross});
     background-repeat: no-repeat;
-    background-size: 70%;
+    background-size: 75%;
     background-position: center;
     pointer-events: none;
   }
   .circle {
     background-image: url(${circle});
     background-repeat: no-repeat;
-    background-size: 70%;
+    background-size: 75%;
     background-position: center;
     pointer-events: none;
+  }
+
+  @media (min-width: 600px) {
+    .cross,
+    .circle {
+      background-size: 40%;
+    }
+  }
+`;
+
+const resetButton = css`
+  background-color: #5d5d5d;
+  color: white;
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+  user-select: none;
+  outline: none;
+  border: none;
+
+  &:hover {
+    background-color: #444;
+  }
+`;
+
+const rewindButton = css`
+  background-color: #ffd700;
+  color: black;
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+  user-select: none;
+  outline: none;
+  border: none;
+
+  margin-left: 20px;
+
+  &:hover {
+    background-color: #e6be8a;
   }
 `;
 
@@ -242,11 +281,13 @@ class Board extends Component {
             : "Game tied!"}
         </h2>
 
-        <button onClick={this.handleReset}>
+        <button css={resetButton} onClick={this.handleReset}>
           {!this.state.winConditionMet ? "Reset" : "New Game"}
         </button>
 
-        <button onClick={this.handleRewind}>Rewind</button>
+        <button css={rewindButton} onClick={this.handleRewind}>
+          Rewind
+        </button>
       </React.Fragment>
     );
   }
