@@ -13,9 +13,14 @@ const Tile = props => {
   return (
     <div
       // css={tileStyle}
-      className="itle"
-      // className={props.status ? "" : props.player === "p1" ? "cross" : "circle"}
-      // className= {props.player === 'p1' ? 'cross' : 'circle'}
+      className={
+        "itle " +
+        (props.status != null
+          ? props.status === "p1"
+            ? "cross"
+            : "circle"
+          : "")
+      }
       id={props.id}
       onClick={props.handleClick}
     />

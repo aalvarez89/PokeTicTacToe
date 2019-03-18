@@ -37,6 +37,10 @@ const boardStyle = css`
   }
 
   .cross {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+
     background-image: url(${cross});
     background-repeat: no-repeat;
     background-size: 70%;
@@ -44,6 +48,10 @@ const boardStyle = css`
     pointer-events: none;
   }
   .circle {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+
     background-image: url(${circle});
     background-repeat: no-repeat;
     background-size: 70%;
@@ -56,7 +64,7 @@ class Board extends Component {
   state = {
     currentTurn: 1,
     currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
-    memorySlots: [],
+    rewind: [],
     winConditionMet: false,
     slots: [
       { tag: "UL", status: "neutral", player: null },
@@ -70,6 +78,7 @@ class Board extends Component {
       { tag: "LR", status: "neutral", player: null }
     ]
   };
+
   static getDerivedStateFromProps(prevProps, prevState) {
     let win = prevState.slots;
     let winConfirm = false;
@@ -153,18 +162,29 @@ class Board extends Component {
     ) {
       winConfirm = !winConfirm;
       console.log("win!");
+    } else {
+      if (
+        win[0].status === "active" &&
+        win[1].status === "active" &&
+        win[2].status === "active" &&
+        win[3].status === "active" &&
+        win[4].status === "active" &&
+        win[5].status === "active" &&
+        win[6].status === "active" &&
+        win[7].status === "active" &&
+        win[8].status === "active"
+      ) {
+        console.log("game tied!");
+      }
     }
 
     return { winConditionMet: winConfirm };
   }
 
-  handleReset = () => {
-    this.setState({
-      slots: this.state.slots.map(e => {
-        return { tag: e.tag, status: "neutral" };
-      })
-    });
-  };
+  handleRewind() {
+    const lastState = this.state.rewind.pop();
+    this.setState(lastState);
+  }
 
   render() {
     return (
@@ -174,7 +194,7 @@ class Board extends Component {
             <div className="frame" key={i}>
               <Tile
                 id={e.tag}
-                // key={i}
+                key={i}
                 status={e.player}
                 player={this.state.currentPlayer}
                 //CLICK EVENT
@@ -191,17 +211,20 @@ class Board extends Component {
                               this.state.currentPlayer === "p1" ? "p1" : "p2"
                           }
                         : slot
-                    )
+                    ),
+                    rewind: [...this.state.rewind, this.state]
                   });
 
                   if (this.state.currentPlayer === "p1") {
-                    e.target.className += " cross";
+                    // e.target.className += " cross";
                     this.setState({ currentPlayer: "p2" });
                   } else {
-                    e.target.className += " circle";
+                    // e.target.className += " circle";
                     this.setState({ currentPlayer: "p1" });
                   }
 
+                  // this.setState( { memorySlots : [...this.state.slots, this.state })
+                  // console.log(this.state.memorySlots)
                   this.setState({ currentTurn: this.state.currentTurn + 1 });
                 }}
 
@@ -216,6 +239,7 @@ class Board extends Component {
             ? "Victory!"
             : this.state.currentPlayer + " Turn"}
         </h2>
+
         <button
           onClick={() => {
             this.setState({
@@ -231,12 +255,20 @@ class Board extends Component {
                 { tag: "LR", status: "neutral", player: null }
               ]
             });
-            console.log(this.state);
           }}
         >
           Reset
         </button>
-        {/* <button onClick={this.handleRewind}> Rewind </button> */}
+
+        <button
+          onClick={() => {
+            const lastState = this.state.rewind.pop();
+            this.setState(lastState);
+          }}
+        >
+          {" "}
+          Rewind{" "}
+        </button>
       </React.Fragment>
     );
   }
