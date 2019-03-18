@@ -3,18 +3,11 @@ import React, { Component } from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
-// const tileStyle = css`
-//   background-color: white;
-//   height: 100%;
-//   width: 100%;
-// `;
-
 const Tile = props => {
   return (
     <div
-      // css={tileStyle}
       className={
-        "itle " +
+        "tile " +
         (props.status != null
           ? props.status === "p1"
             ? "cross"

@@ -26,21 +26,17 @@ const boardStyle = css`
     height: calc(100vh / 4);
     width: 100%;
   }
-  .itle {
+  .tile {
     background-color: white;
     height: 100%;
     width: 100%;
   }
 
-  .post-game {
+  .blocked {
     pointer-events: none;
   }
 
   .cross {
-    background-color: white;
-    height: 100%;
-    width: 100%;
-
     background-image: url(${cross});
     background-repeat: no-repeat;
     background-size: 70%;
@@ -48,10 +44,6 @@ const boardStyle = css`
     pointer-events: none;
   }
   .circle {
-    background-color: white;
-    height: 100%;
-    width: 100%;
-
     background-image: url(${circle});
     background-repeat: no-repeat;
     background-size: 70%;
@@ -79,6 +71,7 @@ class Board extends Component {
     ]
   };
 
+  //Tic-Tac-Toe Game Logic
   static getDerivedStateFromProps(prevProps, prevState) {
     let win = prevState.slots;
     let winConfirm = false;
@@ -90,7 +83,7 @@ class Board extends Component {
         win[1].player === "p2" &&
         win[2].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[0].player === "p1" &&
@@ -100,7 +93,7 @@ class Board extends Component {
         win[3].player === "p2" &&
         win[6].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[0].player === "p1" &&
@@ -110,7 +103,7 @@ class Board extends Component {
         win[4].player === "p2" &&
         win[8].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[3].player === "p1" &&
@@ -120,7 +113,7 @@ class Board extends Component {
         win[4].player === "p2" &&
         win[5].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[1].player === "p1" &&
@@ -130,7 +123,7 @@ class Board extends Component {
         win[4].player === "p2" &&
         win[7].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[2].player === "p1" &&
@@ -140,7 +133,7 @@ class Board extends Component {
         win[4].player === "p2" &&
         win[6].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[6].player === "p1" &&
@@ -150,7 +143,7 @@ class Board extends Component {
         win[7].player === "p2" &&
         win[8].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else if (
       (win[2].player === "p1" &&
@@ -160,7 +153,7 @@ class Board extends Component {
         win[5].player === "p2" &&
         win[8].player === "p2")
     ) {
-      winConfirm = !winConfirm;
+      winConfirm = "win";
       console.log("win!");
     } else {
       if (
@@ -175,16 +168,28 @@ class Board extends Component {
         win[8].status === "active"
       ) {
         console.log("game tied!");
+        return { winConditionMet: "tie" };
       }
     }
 
-    return { winConditionMet: winConfirm };
+    return {
+      winConditionMet: winConfirm
+    };
   }
 
-  handleRewind() {
+  handleReset = () => {
+    this.setState({
+      currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
+      slots: this.state.slots.map(r => {
+        return { tag: r.tag, status: "neutral", player: null };
+      })
+    });
+  };
+
+  handleRewind = () => {
     const lastState = this.state.rewind.pop();
     this.setState(lastState);
-  }
+  };
 
   render() {
     return (
@@ -196,8 +201,7 @@ class Board extends Component {
                 id={e.tag}
                 key={i}
                 status={e.player}
-                player={this.state.currentPlayer}
-                //CLICK EVENT
+                //Turn Change Event
                 handleClick={e => {
                   let coordinate = e.target.id;
 
@@ -216,59 +220,33 @@ class Board extends Component {
                   });
 
                   if (this.state.currentPlayer === "p1") {
-                    // e.target.className += " cross";
                     this.setState({ currentPlayer: "p2" });
                   } else {
-                    // e.target.className += " circle";
                     this.setState({ currentPlayer: "p1" });
                   }
 
-                  // this.setState( { memorySlots : [...this.state.slots, this.state })
-                  // console.log(this.state.memorySlots)
                   this.setState({ currentTurn: this.state.currentTurn + 1 });
                 }}
-
-                //CLICK EVENT END
               />
             </div>
           ))}
         </div>
 
         <h2>
-          {this.state.winConditionMet
-            ? "Victory!"
-            : this.state.currentPlayer + " Turn"}
+          {!this.state.winConditionMet
+            ? this.state.currentPlayer + " Turn"
+            : this.state.winConditionMet === "win"
+            ? `${
+                this.state.currentPlayer === "p1" ? "Player 2" : "Player 1"
+              } Victory!`
+            : "Game tied!"}
         </h2>
 
-        <button
-          onClick={() => {
-            this.setState({
-              slots: [
-                { tag: "UL", status: "neutral", player: null },
-                { tag: "UM", status: "neutral", player: null },
-                { tag: "UR", status: "neutral", player: null },
-                { tag: "ML", status: "neutral", player: null },
-                { tag: "MC", status: "neutral", player: null },
-                { tag: "MR", status: "neutral", player: null },
-                { tag: "LL", status: "neutral", player: null },
-                { tag: "LM", status: "neutral", player: null },
-                { tag: "LR", status: "neutral", player: null }
-              ]
-            });
-          }}
-        >
-          Reset
+        <button onClick={this.handleReset}>
+          {!this.state.winConditionMet ? "Reset" : "New Game"}
         </button>
 
-        <button
-          onClick={() => {
-            const lastState = this.state.rewind.pop();
-            this.setState(lastState);
-          }}
-        >
-          {" "}
-          Rewind{" "}
-        </button>
+        <button onClick={this.handleRewind}>Rewind</button>
       </React.Fragment>
     );
   }
