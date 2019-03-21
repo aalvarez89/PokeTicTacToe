@@ -32,7 +32,7 @@ const boardStyle = css`
     width: 100%;
   }
 
-  .blocked {
+  .locked {
     pointer-events: none;
   }
 
@@ -41,14 +41,14 @@ const boardStyle = css`
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
-    pointer-events: none;
+    /* pointer-events: none; */
   }
   .circle {
     background-image: url(${circle});
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
-    pointer-events: none;
+    /* pointer-events: none; */
   }
 
   @media (min-width: 600px) {
@@ -98,20 +98,31 @@ class Board extends Component {
     rewind: [],
     winConditionMet: false,
     slots: [
-      { tag: "UL", status: "neutral", player: null },
-      { tag: "UM", status: "neutral", player: null },
-      { tag: "UR", status: "neutral", player: null },
-      { tag: "ML", status: "neutral", player: null },
-      { tag: "MC", status: "neutral", player: null },
-      { tag: "MR", status: "neutral", player: null },
-      { tag: "LL", status: "neutral", player: null },
-      { tag: "LM", status: "neutral", player: null },
-      { tag: "LR", status: "neutral", player: null }
+      { tag: "UL", status: false, player: null },
+      { tag: "UM", status: false, player: null },
+      { tag: "UR", status: false, player: null },
+      { tag: "ML", status: false, player: null },
+      { tag: "MC", status: false, player: null },
+      { tag: "MR", status: false, player: null },
+      { tag: "LL", status: false, player: null },
+      { tag: "LM", status: false, player: null },
+      { tag: "LR", status: false, player: null }
     ]
   };
 
   //Tic-Tac-Toe Game Logic
   static getDerivedStateFromProps(prevProps, prevState) {
+    console.log(
+      prevState.slots
+        .filter(e => e.status === false)
+        .map(e => {
+          return {
+            tag: e.tag,
+            status: !e.status,
+            player: e.player
+          };
+        })
+    );
     let win = prevState.slots;
     let winConfirm = false;
     if (
@@ -196,31 +207,49 @@ class Board extends Component {
       console.log("win!");
     } else {
       if (
-        win[0].status === "active" &&
-        win[1].status === "active" &&
-        win[2].status === "active" &&
-        win[3].status === "active" &&
-        win[4].status === "active" &&
-        win[5].status === "active" &&
-        win[6].status === "active" &&
-        win[7].status === "active" &&
-        win[8].status === "active"
+        win[0].status === true &&
+        win[1].status === true &&
+        win[2].status === true &&
+        win[3].status === true &&
+        win[4].status === true &&
+        win[5].status === true &&
+        win[6].status === true &&
+        win[7].status === true &&
+        win[8].status === true
       ) {
         console.log("game tied!");
         return { winConditionMet: "tie" };
       }
     }
-
-    return {
-      winConditionMet: winConfirm
-    };
+    if (!winConfirm) {
+      return {
+        winConditionMet: winConfirm
+      };
+    } else {
+      return {
+        winConditionMet: winConfirm,
+        slots: prevState.slots
+          // .filter(e => e.status === false)
+          .map(e => {
+            if (!e.status) {
+              return { tag: e.tag, status: true, player: e.player };
+            } else {
+              return {
+                tag: e.tag,
+                status: e.status,
+                player: e.player
+              };
+            }
+          })
+      };
+    }
   }
 
   handleReset = () => {
     this.setState({
       currentPlayer: Math.random() >= 0.5 ? "p1" : "p2",
       slots: this.state.slots.map(r => {
-        return { tag: r.tag, status: "neutral", player: null };
+        return { tag: r.tag, status: false, player: null };
       })
     });
   };
@@ -239,7 +268,8 @@ class Board extends Component {
               <Tile
                 id={e.tag}
                 key={i}
-                status={e.player}
+                player={e.player}
+                status={e.status}
                 //Turn Change Event
                 handleClick={e => {
                   let coordinate = e.target.id;
@@ -249,7 +279,7 @@ class Board extends Component {
                       slot.tag === coordinate
                         ? {
                             tag: slot.tag,
-                            status: "active",
+                            status: true,
                             player:
                               this.state.currentPlayer === "p1" ? "p1" : "p2"
                           }
