@@ -10,14 +10,6 @@ const Tile = props => {
       className={`tile ${
         props.player != null ? (props.player === "p1" ? "cross" : "circle") : ""
       }${props.status === true ? " locked" : ""}`}
-      // className={
-      //   "tile " +
-      //   (props.player != null
-      //     ? props.player === "p1"
-      //       ? "cross"
-      //       : "circle"
-      //     : "")
-      // }
       id={props.id}
       onClick={props.handleClick}
     />
