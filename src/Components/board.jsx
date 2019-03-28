@@ -6,6 +6,7 @@ import Tile from "../Components/tile.jsx";
 import circle from "../circle.svg";
 import cross from "../cross.svg";
 
+//CSS Styles (emotion.js)
 const boardStyle = css`
   width: 80%;
 
@@ -48,7 +49,6 @@ const boardStyle = css`
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
-    /* pointer-events: none; */
   }
 
   @media (min-width: 600px) {
@@ -228,19 +228,17 @@ class Board extends Component {
     } else {
       return {
         winConditionMet: winConfirm,
-        slots: prevState.slots
-          // .filter(e => e.status === false)
-          .map(e => {
-            if (!e.status) {
-              return { tag: e.tag, status: true, player: e.player };
-            } else {
-              return {
-                tag: e.tag,
-                status: e.status,
-                player: e.player
-              };
-            }
-          })
+        slots: prevState.slots.map(e => {
+          if (!e.status) {
+            return { tag: e.tag, status: true, player: e.player };
+          } else {
+            return {
+              tag: e.tag,
+              status: e.status,
+              player: e.player
+            };
+          }
+        })
       };
     }
   }
