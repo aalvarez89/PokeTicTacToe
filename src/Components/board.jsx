@@ -3,8 +3,27 @@ import React, { Component } from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import Tile from "../Components/tile.jsx";
-import circle from "../circle.svg";
-import cross from "../cross.svg";
+// import circle from "../circle.svg";
+// import cross from "../cross.svg";
+
+// import circle from "../gr_oh.svg";
+// import cross from "../gr_ex.svg";
+
+import grooky_o from "../gr_oh.svg";
+import grooky_x from "../gr_ex.svg";
+
+import sobble_o from "../so_oh.svg";
+import sobble_x from "../so_ex.svg";
+
+import sbunny_o from "../bu_oh.svg";
+import sbunny_x from "../bu_ex.svg";
+
+const poke = [
+  { ex: grooky_x, oh: grooky_o, gap: "#68814F" },
+  { ex: sobble_x, oh: sobble_o, gap: "#2B6599" },
+  { ex: sbunny_x, oh: sbunny_o, gap: "#D57A51" }
+];
+const rand_num = Math.floor(Math.random() * Math.floor(3));
 
 //CSS Styles (emotion.js)
 const boardStyle = css`
@@ -14,14 +33,15 @@ const boardStyle = css`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
 
-  grid-gap: 7px;
+  grid-gap: 3px;
 
   justify-items: center;
   align-items: center;
 
   margin: 0 auto;
 
-  background-color: #5d5d5d;
+  /* background-color: #5d5d5d; */
+  background-color: ${poke[rand_num].gap};
 
   .frame {
     height: calc(100vh / 4);
@@ -29,6 +49,7 @@ const boardStyle = css`
   }
   .tile {
     background-color: white;
+    /* ${poke[rand_num].bg}; */
     height: 100%;
     width: 100%;
   }
@@ -38,14 +59,14 @@ const boardStyle = css`
   }
 
   .cross {
-    background-image: url(${cross});
+    background-image: url(${poke[rand_num].ex});
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
     /* pointer-events: none; */
   }
   .circle {
-    background-image: url(${circle});
+    background-image: url(${poke[rand_num].oh});
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
@@ -61,6 +82,7 @@ const boardStyle = css`
 
 const resetButton = css`
   background-color: #5d5d5d;
+  box-shadow: 0 1px 8px 0 #888;
   color: white;
   border-radius: 5px;
   width: 100px;
@@ -68,17 +90,24 @@ const resetButton = css`
   user-select: none;
   outline: none;
   border: none;
+  transition: transform 0.1s, background-color 0.1s, box-shadow 0.1s;
 
   &:hover {
+    box-shadow: 0 2px 16px 1px #888;
+
+    transform: translate(0, -3px);
+  }
+  &:active {
     background-color: #444;
   }
 `;
 
 const rewindButton = css`
   background-color: #ffd700;
+  box-shadow: 0 1px 8px 0 #888;
   color: black;
-  border-radius: 5px;
-  width: 100px;
+  border-radius: 50%;
+  width: 30px;
   height: 30px;
   user-select: none;
   outline: none;
@@ -86,8 +115,22 @@ const rewindButton = css`
 
   margin-left: 20px;
 
+  transition: transform 0.1s, background-color 0.1s, box-shadow 0.1s;
+
   &:hover {
+    /* background-color: #e6be8a; */
+    box-shadow: 0 2px 16px 1px #888;
+
+    transform: translate(0, -3px);
+  }
+  &:active {
     background-color: #e6be8a;
+  }
+
+  svg {
+    width: 10px;
+    height: 10px;
+    fill: white;
   }
 `;
 
@@ -314,7 +357,10 @@ class Board extends Component {
         </button>
 
         <button css={rewindButton} onClick={this.handleRewind}>
-          Rewind
+          {/* Rewind */}
+          <svg height="512pt" viewBox="0 -26 512 512" width="512pt">
+            <path d="M444.633 67.367C401.19 23.926 343.433 0 282 0 194.91 0 115.258 49.477 76.387 126.852H21.152a21.076 21.076 0 0 0-19.53 13.05 21.085 21.085 0 0 0 4.581 23.043l70.567 70.567a18.978 18.978 0 0 0 13.507 5.593c5.102 0 9.895-1.984 13.5-5.59l70.57-70.57a21.085 21.085 0 0 0 4.583-23.043 21.072 21.072 0 0 0-19.532-13.05h-48.777C146.511 67.344 211.445 30 282 30c110.281 0 200 89.719 200 200s-89.719 200-200 200c-53.422 0-103.645-20.8-141.422-58.574-5.855-5.86-15.355-5.86-21.21 0-5.86 5.855-5.86 15.355 0 21.21C162.804 436.079 220.562 460 282 460s119.191-23.922 162.637-67.363C488.078 349.195 512 291.437 512 230c0-61.434-23.922-119.191-67.367-162.633zM90.277 204.59l-47.742-47.738h95.48zm0 0" />
+          </svg>
         </button>
       </React.Fragment>
     );
