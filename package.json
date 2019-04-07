@@ -31,5 +31,5 @@
     "enzyme-adapter-react-16": "^1.11.2",
     "enzyme-to-json": "^3.3.5"
   },
-  "homepage": "https://darkstylazz.github.io"
+  "homepage": "https://darkstylazz.github.io/PokeTicTacToe"
 }
