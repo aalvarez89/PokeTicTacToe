@@ -1,0 +1,19 @@
+{
+  "main.css": "/PokeTicTacToe/static/css/main.f557517a.chunk.css",
+  "main.js": "/PokeTicTacToe/static/js/main.44a0adad.chunk.js",
+  "main.js.map": "/PokeTicTacToe/static/js/main.44a0adad.chunk.js.map",
+  "runtime~main.js": "/PokeTicTacToe/static/js/runtime~main.db3588ce.js",
+  "runtime~main.js.map": "/PokeTicTacToe/static/js/runtime~main.db3588ce.js.map",
+  "static/js/2.2f609849.chunk.js": "/PokeTicTacToe/static/js/2.2f609849.chunk.js",
+  "static/js/2.2f609849.chunk.js.map": "/PokeTicTacToe/static/js/2.2f609849.chunk.js.map",
+  "index.html": "/PokeTicTacToe/index.html",
+  "precache-manifest.ca984e35f81644c2c7fe0e736853d9d9.js": "/PokeTicTacToe/precache-manifest.ca984e35f81644c2c7fe0e736853d9d9.js",
+  "service-worker.js": "/PokeTicTacToe/service-worker.js",
+  "static/css/main.f557517a.chunk.css.map": "/PokeTicTacToe/static/css/main.f557517a.chunk.css.map",
+  "static/media/bu_ex.svg": "/PokeTicTacToe/static/media/bu_ex.059e322a.svg",
+  "static/media/bu_oh.svg": "/PokeTicTacToe/static/media/bu_oh.0fe52d79.svg",
+  "static/media/gr_ex.svg": "/PokeTicTacToe/static/media/gr_ex.728208b7.svg",
+  "static/media/gr_oh.svg": "/PokeTicTacToe/static/media/gr_oh.371d10e7.svg",
+  "static/media/so_ex.svg": "/PokeTicTacToe/static/media/so_ex.ad0ffbba.svg",
+  "static/media/so_oh.svg": "/PokeTicTacToe/static/media/so_oh.2fa40bf0.svg"
+}
