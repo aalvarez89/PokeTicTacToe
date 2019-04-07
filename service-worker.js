@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/PokeTicTacToe/precache-manifest.ca984e35f81644c2c7fe0e736853d9d9.js"
+  "/PokeTicTacToe/precache-manifest.fd4cc0826a2edcaec71228996f92f8ae.js"
 );
 
 workbox.clientsClaim();

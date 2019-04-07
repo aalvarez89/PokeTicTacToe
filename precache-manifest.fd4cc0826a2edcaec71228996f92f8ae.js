@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/PokeTicTacToe/static/media/bu_ex.059e322a.svg"
   },
   {
-    "revision": "23982fd6573c9447910fe535ac6bb432",
+    "revision": "20e3b0bbc2c3a396a6687e8834522899",
     "url": "/PokeTicTacToe/index.html"
   }
 ];
